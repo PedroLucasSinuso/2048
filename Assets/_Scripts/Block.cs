@@ -15,7 +15,7 @@ public class Block : MonoBehaviour
 
     public void Init(BlockType type){
         Value = type.Value;
-        //_renderer.sprite = type.Sprite;
+        if(type.Sprite != null) _renderer.sprite = type.Sprite;
         _renderer.color = type.Color;
         _text.text = type.Value.ToString();
     }
@@ -37,4 +37,6 @@ public class Block : MonoBehaviour
     }
 
     public bool CanMerge(int value) => value == Value && !Merging && MergingBlock == null;
+
+    
 }

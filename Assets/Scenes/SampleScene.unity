@@ -506,30 +506,41 @@ MonoBehaviour:
   _width: 4
   _height: 4
   _types:
-  - Value: 2
+  - Sprite: {fileID: 21300000, guid: c56afb077cfcdbb45a663f902db37898, type: 3}
+    Value: 2
     Color: {r: 0, g: 0.8867924, b: 0.87801605, a: 1}
-  - Value: 4
+  - Sprite: {fileID: 21300000, guid: ff75dd05a08871846995e0efc29582f6, type: 3}
+    Value: 4
     Color: {r: 0, g: 0.23238373, b: 1, a: 1}
-  - Value: 8
+  - Sprite: {fileID: -4084257998366888091, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 8
     Color: {r: 0.28077126, g: 0, b: 1, a: 1}
-  - Value: 16
+  - Sprite: {fileID: -8641084901815011778, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 16
     Color: {r: 0.58611584, g: 0, b: 1, a: 1}
-  - Value: 32
+  - Sprite: {fileID: -1519705329917092931, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 32
     Color: {r: 0.9253815, g: 0.0047169924, b: 1, a: 1}
-  - Value: 64
+  - Sprite: {fileID: 7672181612725839413, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 64
     Color: {r: 1, g: 0, b: 0.58835554, a: 1}
-  - Value: 128
+  - Sprite: {fileID: 8344921480353926226, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 128
     Color: {r: 1, g: 0, b: 0.19320297, a: 1}
-  - Value: 256
+  - Sprite: {fileID: 3704596566392386024, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 256
     Color: {r: 1, g: 0.29209286, b: 0, a: 1}
-  - Value: 512
+  - Sprite: {fileID: 3228390964832340205, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 512
     Color: {r: 1, g: 0.59912676, b: 0, a: 1}
-  - Value: 1024
+  - Sprite: {fileID: 7695794658083153993, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 1024
     Color: {r: 0.98977304, g: 1, b: 0, a: 1}
-  - Value: 2048
+  - Sprite: {fileID: 6845508033182578871, guid: 2de0e761716f68d4bb079100e586622f, type: 3}
+    Value: 2048
     Color: {r: 0.21888566, g: 1, b: 0, a: 1}
   _travelTime: 0.25
-  _winCondition: 32
+  _winCondition: 2048
   _nodePrefab: {fileID: 2840278765869030826, guid: 84cce4ae125ffed469849bb7ef98ad2e, type: 3}
   _boardPrefab: {fileID: 8795001891692823479, guid: 1df36ca7ed8ec9f4aaf195b7b7e1a8a5, type: 3}
   _blockPrefab: {fileID: 6616261630756600181, guid: 31fd72cf040d59b428ff0154ef06c666, type: 3}

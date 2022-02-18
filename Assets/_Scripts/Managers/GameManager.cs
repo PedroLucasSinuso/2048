@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
 
     }
 
+    
+
     private void ChangeState(GameState newState){
         _state = newState;
 
@@ -54,6 +56,8 @@ public class GameManager : MonoBehaviour
                 SpawnBlocks(_round++ == 0 ? 2 : 1);
                 break;
             case GameState.WaitingInput:
+                break;
+            case GameState.ProcessInput:
                 break;
             case GameState.Moving:
                 break;
@@ -110,25 +114,21 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        
+
         ChangeState(_blocks.Any(b=> b.Value == _winCondition)? GameState.Win : GameState.WaitingInput);
     }
 
     void SpawnBlock(Node node, int value){
+
             var block = Instantiate(_blockPrefab,node.Pos,Quaternion.identity);
             block.Init(GetBlockTypeByValue(value));
             block.SetBlock(node);
             _blocks.Add(block);
     }
 
-
-
-    void Shift(Vector2 dir){
-        ChangeState(GameState.Moving);
-
-        //Ordering the blocks list to properly calculate their position
-        var orderedBlocks = _blocks.OrderBy(b => b.Pos.x).ThenBy(b => b.Pos.y).ToList();
-        if(dir == Vector2.right || dir == Vector2.up) orderedBlocks.Reverse();
-
+    
+    void Move(List<Block> orderedBlocks, Vector2 dir){
         foreach (var block in orderedBlocks){
             var next = block.Node;
             do{
@@ -137,38 +137,71 @@ public class GameManager : MonoBehaviour
                 var possibleNode = GetNodeAtPosition(next.Pos + dir);
 
                 if(possibleNode != null){
-                    
+                        
                     // if is possible to merge, than merge
                     if(possibleNode.OccupiedBlock != null && possibleNode.OccupiedBlock.CanMerge(block.Value)){
-                        
+                            
                         block.MergeBlock(possibleNode.OccupiedBlock);
 
-                    }
+                }
                     //otherwise, can we move to this spot? 
                     else if(possibleNode.OccupiedBlock == null) next = possibleNode;
                 }
             } while (next != block.Node);
-
         }
 
         var sequence = DOTween.Sequence();
 
+            
         foreach (var block in orderedBlocks){
+                
             var movePoint = block.MergingBlock != null ? block.MergingBlock.Node.Pos : block.Node.Pos;
-
+                
             sequence.Insert(0,block.transform.DOMove(movePoint,_travelTime));
 
             sequence.OnComplete(()=>{
+
                 foreach (var block in orderedBlocks.Where(b=>b.MergingBlock != null)){                  
                     MergeBlocks(block.MergingBlock, block);
                 }
-
+                            
                 ChangeState(GameState.SpawningBlocks);
-            });    
+                    
+            });               
         }
     }
+    
+    void Shift(Vector2 dir){
+        ChangeState(GameState.ProcessInput);
+        
+        //Ordering the blocks list to properly calculate their position
+        var orderedBlocks = _blocks.OrderBy(b => b.Pos.x).ThenBy(b => b.Pos.y).ToList();
+        if(dir == Vector2.right || dir == Vector2.up) orderedBlocks.Reverse();
 
 
+
+        ChangeState(StateBasedOnMove(orderedBlocks,dir));
+    
+        if(_state == GameState.Moving) Move(orderedBlocks,dir);
+        
+    }
+
+    GameState StateBasedOnMove(List<Block> orderedBlocks, Vector2 dir){
+        
+        foreach (var block in orderedBlocks){
+            var nextNode = GetNodeAtPosition(block.Node.Pos + dir);
+            var nextBlock = nextNode == null ? null: nextNode.OccupiedBlock;
+            var canMerge = nextBlock == null ? false: block.CanMerge(nextBlock.Value);
+            Debug.Log("Block: "+block+" Can Merge? "+canMerge);
+
+            
+
+            if(nextNode != null && nextBlock == null || canMerge) return GameState.Moving;
+            
+        }
+        return GameState.WaitingInput;
+    }
+    
     void MergeBlocks(Block baseBlock, Block mergingBlock){
         SpawnBlock(baseBlock.Node, baseBlock.Value*2);
 
@@ -189,7 +222,7 @@ public class GameManager : MonoBehaviour
 
 [System.Serializable]
 public struct BlockType{
-    //public Sprite Sprite;
+    public Sprite Sprite;
     public int Value;
     public Color Color;
 }
@@ -198,6 +231,7 @@ public enum GameState{
     GenerateLevel,
     SpawningBlocks,
     WaitingInput,
+    ProcessInput,
     Moving,
     Win,
     Lose
